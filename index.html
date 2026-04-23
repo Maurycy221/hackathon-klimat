@@ -2,57 +2,207 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Eco-Kalkulator</title>
-</head>
-<body style="font-family: 'Segoe UI', sans-serif; background-color: #f0f9f4; margin: 0; padding: 20px;">
+    <title>Eco-Kalkulator Pro</title>
+    <style>
+        /* Zmienne kolorów dla trybów */
+        :root { 
+            --bg: #f0f9f4; 
+            --card: white; 
+            --text: #333; 
+            --border: #e0e0e0; 
+            --header: #2d6a4f;
+        }
+        .dark-mode { 
+            --bg: #121212; 
+            --card: #1e1e1e; 
+            --text: #f0f0f0; 
+            --border: #333; 
+            --header: #1b4332;
+        }
 
-    <div style="max-width: 800px; margin: auto; background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
-        <div style="background: #2d6a4f; padding: 40px; text-align: center; color: white;">
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            padding: 20px; 
+            transition: 0.3s; 
+            color: var(--text); 
+        }
+
+        .container { 
+            max-width: 850px; 
+            margin: auto; 
+            background: var(--card); 
+            border-radius: 25px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+        }
+        
+        .header { 
+            background: var(--header); 
+            padding: 40px; 
+            text-align: center; 
+            color: white; 
+        }
+
+        /* Chipsy - Szybki wybór */
+        .chip { 
+            font-size: 10px; 
+            background: #95d5b2; 
+            color: #1b4332; 
+            padding: 4px 8px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            margin-right: 4px; 
+            border: none; 
+            margin-top: 5px;
+            transition: 0.2s;
+        }
+        .chip:hover { background: #74c69d; }
+
+        .history-box { 
+            margin-top: 20px; 
+            padding: 20px; 
+            background: var(--card); 
+            border-radius: 15px; 
+            border: 1px solid var(--border); 
+            font-family: monospace; 
+            white-space: pre-wrap; 
+            font-size: 12px; 
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .dark-toggle { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            padding: 12px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            border: none; 
+            background: #2d6a4f; 
+            color: white; 
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        input { 
+            float: right; 
+            width: 60px; 
+            padding: 5px; 
+            border-radius: 5px; 
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+        }
+
+        .main-content { padding: 30px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <button class="dark-toggle" onclick="document.body.classList.toggle('dark-mode')">🌙</button>
+
+    <div class="container">
+        <div class="header">
             <h1 style="margin: 0;">🌱 Twój Osobisty Eco-Kalkulator</h1>
-            <p style="opacity: 0.9;">Oblicz i zapisz emisję CO2 swoich urządzeń</p>
+            <p style="opacity: 0.9;">Zmień swoje nawyki, uratuj planetę</p>
         </div>
         
-        <div style="padding: 30px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+        <div class="main-content">
+            <div class="grid">
                 
-                <div style="background: #fff; padding: 20px; border-radius: 15px; border: 1px solid #e0e0e0;">
-                    <h3 style="color: #2d6a4f; border-bottom: 2px solid #95d5b2; padding-bottom: 5px;">Godziny użycia:</h3>
-                    <div style="margin: 12px 0;">💻 Komputer: <input type="number" id="komp" value="0" style="float: right; width: 50px;"></div>
-                    <div style="margin: 12px 0;">📺 Telewizor: <input type="number" id="tv" value="0" style="float: right; width: 50px;"></div>
-                    <div style="margin: 12px 0;">🎮 Konsola: <input type="number" id="kon" value="0" style="float: right; width: 50px;"></div>
-                    <div style="margin: 12px 0;">🔌 Ładowarka: <input type="number" id="lad" value="0" style="float: right; width: 50px;"></div>
-                    <div style="margin: 12px 0;">💡 Oświetlenie: <input type="number" id="led" value="0" style="float: right; width: 50px;"></div>
+                <div style="background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--border);">
+                    <h3 style="color: #40916c; border-bottom: 2px solid #95d5b2; padding-bottom: 5px; margin-top: 0;">Godziny użycia:</h3>
                     
-                    <button type="button" onclick="obliczIZapisz()" style="width: 100%; background: #40916c; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px;">
-                        OBLICZ
+                    <div style="margin-bottom: 15px;">
+                        💻 Komputer: <input type="number" id="komp" value="0">
+                        <br>
+                        <button class="chip" onclick="document.getElementById('komp').value=1">1h</button>
+                        <button class="chip" onclick="document.getElementById('komp').value=4">4h</button>
+                        <button class="chip" onclick="document.getElementById('komp').value=8">Praca (8h)</button>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        📺 Telewizor: <input type="number" id="tv" value="0">
+                        <br>
+                        <button class="chip" onclick="document.getElementById('tv').value=1">Wiadomości</button>
+                        <button class="chip" onclick="document.getElementById('tv').value=3">Film</button>
+                        <button class="chip" onclick="document.getElementById('tv').value=6">Serial</button>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        🎮 Konsola: <input type="number" id="kon" value="0">
+                        <br>
+                        <button class="chip" onclick="document.getElementById('kon').value=1">Szybko</button>
+                        <button class="chip" onclick="document.getElementById('kon').value=3">Sesja</button>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        🔌 Ładowarka: <input type="number" id="lad" value="0">
+                        <br>
+                        <button class="chip" onclick="document.getElementById('lad').value=2">2h</button>
+                        <button class="chip" onclick="document.getElementById('lad').value=8">Noc</button>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        💡 Oświetlenie: <input type="number" id="led" value="0">
+                        <br>
+                        <button class="chip" onclick="document.getElementById('led').value=4">4h</button>
+                        <button class="chip" onclick="document.getElementById('led').value=10">Cały dzień</button>
+                    </div>
+                    
+                    <button type="button" onclick="obliczIZapisz()" style="width: 100%; background: #40916c; color: white; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px;">
+                        OBLICZ I ZAPISZ
                     </button>
-                    <p id="status-serwera" style="font-size: 11px; text-align: center; margin-top: 10px; color: #2d6a4f;"></p>
+                    <p id="status-serwera" style="font-size: 12px; text-align: center; margin-top: 10px; color: #40916c; font-weight: bold;"></p>
                 </div>
 
-                <div id="wynik-box" style="background: #d8f3dc; padding: 25px; border-radius: 15px; border: 2px dashed #74c69d; text-align: center;">
+                <div id="wynik-box" style="background: #d8f3dc; padding: 25px; border-radius: 15px; border: 2px dashed #74c69d; text-align: center; color: #1b4332; transition: 0.3s;">
                     <h3 style="margin-top: 0;">Twój Raport:</h3>
-                    <ul id="lista-wynikow" style="list-style: none; padding: 0; text-align: left; font-size: 14px; line-height: 1.8;">
-                        <li style="color: #666; text-align: center;">Wpisz dane i kliknij przycisk...</li>
+                    <ul id="lista-wynikow" style="list-style: none; padding: 0; text-align: left; font-size: 14px; line-height: 2;">
+                        <li style="color: #666; text-align: center;">Brak danych...</li>
                     </ul>
                     <hr style="border: 0; border-top: 1px solid #95d5b2; margin: 15px 0;">
                     <span style="font-size: 14px; font-weight: bold;">ŁĄCZNA EMISJA:</span>
-                    <h2 id="wynik-cyfra" style="font-size: 42px; margin: 5px 0; color: #1b4332;">0 kg</h2>
+                    <h2 id="wynik-cyfra" style="font-size: 48px; margin: 5px 0;">0 kg</h2>
+                    <p id="eko-porada" style="font-weight: bold; margin-top: 15px; font-size: 14px;"></p>
                 </div>
-
             </div>
+
+            <h4 style="margin-top: 40px; margin-bottom: 10px;">📜 Ostatnie zapisy z bazy danych:</h4>
+            <div id="historia-tekst" class="history-box">Ładowanie historii...</div>
         </div>
     </div>
 
     <script>
+        // Pobieranie historii przy starcie
+        function odswiezHistorie() {
+            fetch('http://127.0.0.1:5000/api/historia')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('historia-tekst').innerText = data.historia;
+                })
+                .catch(() => {
+                    document.getElementById('historia-tekst').innerText = "Serwer offline - nie można pobrać historii.";
+                });
+        }
+
+        window.onload = odswiezHistorie;
+
         function obliczIZapisz() {
-            
+            // Pobieranie wartości
             const h_komp = document.getElementById('komp').value || 0;
             const h_tv = document.getElementById('tv').value || 0;
             const h_kon = document.getElementById('kon').value || 0;
             const h_lad = document.getElementById('lad').value || 0;
             const h_led = document.getElementById('led').value || 0;
 
-            
+            // Obliczenia (Moc * h * 0.7 kg CO2/kWh)
             const e_komp = (h_komp * 0.1 * 0.7).toFixed(3);
             const e_tv = (h_tv * 0.15 * 0.7).toFixed(3);
             const e_kon = (h_kon * 0.2 * 0.7).toFixed(3);
@@ -61,7 +211,7 @@
 
             const suma = (parseFloat(e_komp) + parseFloat(e_tv) + parseFloat(e_kon) + parseFloat(e_lad) + parseFloat(e_led)).toFixed(2);
 
-            
+            // Wyświetlanie listy
             document.getElementById('lista-wynikow').innerHTML = `
                 <li>💻 Komputer: <b>${e_komp} kg CO2</b></li>
                 <li>📺 Telewizor: <b>${e_tv} kg CO2</b></li>
@@ -70,9 +220,31 @@
                 <li>💡 Oświetlenie: <b>${e_led} kg CO2</b></li>
             `;
             document.getElementById('wynik-cyfra').innerText = suma + " kg";
-            document.getElementById('wynik-box').style.background = suma > 1.5 ? "#ffccd5" : "#d8f3dc";
 
-            
+            // LOGIKA OCENY WYNIKU
+            let porada = "";
+            let kolor = "";
+            let textKolor = "#1b4332";
+
+            if (suma <= 0.5) {
+                porada = "🌟 BRAWO! Twoja emisja jest minimalna. Jesteś Eko-Bohaterem!";
+                kolor = "#d8f3dc"; 
+            } else if (suma <= 1.5) {
+                porada = "🌿 Dobry wynik! Mieścisz się w normie.";
+                kolor = "#b7e4c7"; 
+            } else if (suma <= 3.0) {
+                porada = "⚠️ Uwaga! Twoja emisja jest dość wysoka. Wyłączaj urządzenia!";
+                kolor = "#ffd97d"; 
+            } else {
+                porada = "🚨 ZŁY WYNIK! Produkujesz za dużo CO2. Czas na zmiany!";
+                kolor = "#ffccd5"; 
+            }
+
+            const box = document.getElementById('wynik-box');
+            box.style.background = kolor;
+            document.getElementById('eko-porada').innerText = porada;
+
+            // WYSYŁANIE DO PYTHONA
             fetch('http://127.0.0.1:5000/api/zapisz', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -85,10 +257,13 @@
                 })
             })
             .then(res => {
-                if(res.ok) document.getElementById('status-serwera').innerText = "✅ ZAPISANO W BAZIE!";
+                if(res.ok) {
+                    document.getElementById('status-serwera').innerText = "✅ ZAPISANO W BAZIE!";
+                    setTimeout(odswiezHistorie, 500);
+                }
             })
-            .catch(err => {
-                document.getElementById('status-serwera').innerText = "❌ BŁĄD POŁĄCZENIA!";
+            .catch(() => {
+                document.getElementById('status-serwera').innerText = "❌ BŁĄD POŁĄCZENIA Z SERWEREM!";
             });
         }
     </script>

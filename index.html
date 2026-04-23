@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Eco-Kalkulator</title>
+</head>
+<body style="font-family: 'Segoe UI', sans-serif; background-color: #f0f9f4; margin: 0; padding: 20px;">
+
+    <div style="max-width: 800px; margin: auto; background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        <div style="background: #2d6a4f; padding: 40px; text-align: center; color: white;">
+            <h1 style="margin: 0;">🌱 Twój Osobisty Eco-Kalkulator</h1>
+            <p style="opacity: 0.9;">Oblicz i zapisz emisję CO2 swoich urządzeń</p>
+        </div>
+        
+        <div style="padding: 30px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                
+                <div style="background: #fff; padding: 20px; border-radius: 15px; border: 1px solid #e0e0e0;">
+                    <h3 style="color: #2d6a4f; border-bottom: 2px solid #95d5b2; padding-bottom: 5px;">Godziny użycia:</h3>
+                    <div style="margin: 12px 0;">💻 Komputer: <input type="number" id="komp" value="0" style="float: right; width: 50px;"></div>
+                    <div style="margin: 12px 0;">📺 Telewizor: <input type="number" id="tv" value="0" style="float: right; width: 50px;"></div>
+                    <div style="margin: 12px 0;">🎮 Konsola: <input type="number" id="kon" value="0" style="float: right; width: 50px;"></div>
+                    <div style="margin: 12px 0;">🔌 Ładowarka: <input type="number" id="lad" value="0" style="float: right; width: 50px;"></div>
+                    <div style="margin: 12px 0;">💡 Oświetlenie: <input type="number" id="led" value="0" style="float: right; width: 50px;"></div>
+                    
+                    <button type="button" onclick="obliczIZapisz()" style="width: 100%; background: #40916c; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px;">
+                        OBLICZ
+                    </button>
+                    <p id="status-serwera" style="font-size: 11px; text-align: center; margin-top: 10px; color: #2d6a4f;"></p>
+                </div>
+
+                <div id="wynik-box" style="background: #d8f3dc; padding: 25px; border-radius: 15px; border: 2px dashed #74c69d; text-align: center;">
+                    <h3 style="margin-top: 0;">Twój Raport:</h3>
+                    <ul id="lista-wynikow" style="list-style: none; padding: 0; text-align: left; font-size: 14px; line-height: 1.8;">
+                        <li style="color: #666; text-align: center;">Wpisz dane i kliknij przycisk...</li>
+                    </ul>
+                    <hr style="border: 0; border-top: 1px solid #95d5b2; margin: 15px 0;">
+                    <span style="font-size: 14px; font-weight: bold;">ŁĄCZNA EMISJA:</span>
+                    <h2 id="wynik-cyfra" style="font-size: 42px; margin: 5px 0; color: #1b4332;">0 kg</h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function obliczIZapisz() {
+            
+            const h_komp = document.getElementById('komp').value || 0;
+            const h_tv = document.getElementById('tv').value || 0;
+            const h_kon = document.getElementById('kon').value || 0;
+            const h_lad = document.getElementById('lad').value || 0;
+            const h_led = document.getElementById('led').value || 0;
+
+            
+            const e_komp = (h_komp * 0.1 * 0.7).toFixed(3);
+            const e_tv = (h_tv * 0.15 * 0.7).toFixed(3);
+            const e_kon = (h_kon * 0.2 * 0.7).toFixed(3);
+            const e_lad = (h_lad * 0.01 * 0.7).toFixed(3);
+            const e_led = (h_led * 0.06 * 0.7).toFixed(3);
+
+            const suma = (parseFloat(e_komp) + parseFloat(e_tv) + parseFloat(e_kon) + parseFloat(e_lad) + parseFloat(e_led)).toFixed(2);
+
+            
+            document.getElementById('lista-wynikow').innerHTML = `
+                <li>💻 Komputer: <b>${e_komp} kg CO2</b></li>
+                <li>📺 Telewizor: <b>${e_tv} kg CO2</b></li>
+                <li>🎮 Konsola: <b>${e_kon} kg CO2</b></li>
+                <li>🔌 Ładowarka: <b>${e_lad} kg CO2</b></li>
+                <li>💡 Oświetlenie: <b>${e_led} kg CO2</b></li>
+            `;
+            document.getElementById('wynik-cyfra').innerText = suma + " kg";
+            document.getElementById('wynik-box').style.background = suma > 1.5 ? "#ffccd5" : "#d8f3dc";
+
+            
+            fetch('http://127.0.0.1:5000/api/zapisz', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    wynik: suma,
+                    urzadzenia: [
+                        `Komputer: ${e_komp} kg`, `Telewizor: ${e_tv} kg`,
+                        `Konsola: ${e_kon} kg`, `Ładowarka: ${e_lad} kg`, `Oświetlenie: ${e_led} kg`
+                    ]
+                })
+            })
+            .then(res => {
+                if(res.ok) document.getElementById('status-serwera').innerText = "✅ ZAPISANO W BAZIE!";
+            })
+            .catch(err => {
+                document.getElementById('status-serwera').innerText = "❌ BŁĄD POŁĄCZENIA!";
+            });
+        }
+    </script>
+</body>
+</html>

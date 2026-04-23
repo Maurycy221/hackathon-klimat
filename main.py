@@ -1,13 +1,55 @@
 import time
+import datetime
+import threading
+import os
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
+
+
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/')
+def index():
+    return send_from_directory(os.getcwd(), 'index.html')
+
+
+@app.route('/api/zapisz', methods=['POST'])
+def zapisz_ze_strony():
+    dane = request.json
+    wynik = dane.get('wynik', 0)
+    urzadzenia = dane.get('urzadzenia', ["Wpis ze strony WWW"])
+    zapisz_do_bazy(urzadzenia, wynik)
+    return jsonify({"status": "sukces"})
+
+def uruchom_serwer():
+    import logging
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR) 
+    app.run(port=5000, debug=False, use_reloader=False)
+
+
+threading.Thread(target=uruchom_serwer, daemon=True).start()
+
+#
+
+def zapisz_do_bazy(podsumowanie, total):
+    data_wpisu = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open("baza_wynikow.txt", "a", encoding="utf-8") as plik:
+        plik.write(f"\n--- WPIS: {data_wpisu} ---\n")
+        for linia in podsumowanie:
+            plik.write(f"{linia}\n")
+        plik.write(f"LACZNA EMISJA: {total} kg CO2\n")
+    print(f"\n[INFO] Wyniki zostały zapisane do baza_wynikow.txt")
 
 def eco_kalkulator():
+    # Twój styl wizualny z terminala
     print("========================================")
     print("   ECO-KALKULATOR EMISJI CO2 v1.0")
     print("========================================")
-    print("Ten program obliczy, ile kilogramów CO2 emitujesz")
-    print("używając codziennie sprzętów domowych.\n")
+    print("LINK DO STRONY: http://127.0.0.1:5000")
+    print("Ten program obliczy Twoją emisję CO2.\n")
 
-    # Dane: Moc urządzeń w kilowatach (kW)
     urzadzenia = {
         "Komputer / Laptop": 0.1,
         "Telewizor LED": 0.15,
@@ -19,44 +61,37 @@ def eco_kalkulator():
     suma_co2 = 0
     podsumowanie = []
 
-    # Główna pętla obliczeniowa
     for sprzet, moc in urzadzenia.items():
         try:
             print(f"--- {sprzet} ---")
             godziny = float(input(f"Ile godzin dziennie używasz tego sprzętu? "))
-            
-            # Obliczenia: kWh = Moc * Czas
             kwh = moc * godziny
-            # Średni przelicznik w Polsce: ok. 0.7 kg CO2 na 1 kWh
             emisja = round(kwh * 0.7, 3)
-            
             suma_co2 += emisja
             podsumowanie.append(f"{sprzet}: {emisja} kg CO2")
             print(f"Wynik: {emisja} kg CO2 dziennie.\n")
-            
         except ValueError:
-            print("BŁĄD: Wpisz poprawną liczbę! (użyj kropki zamiast przecinka)\n")
+            print("BŁŁĄD: Wpisz liczbę!\n")
             continue
 
-    # Wyświetlanie raportu końcowego
-    print("========================================")
-    print("          RAPORT EKOLOGICZNY")
-    print("========================================")
-    time.sleep(1) # Mały efekt oczekiwania na wynik
     
+    print("========================================")
+    print("           RAPORT EKOLOGICZNY")
+    print("========================================")
+    time.sleep(1)
+
     for linia in podsumowanie:
-        print(f" * {linia}")
-    
+        print(f"* {linia}")
+
     total = round(suma_co2, 2)
     print(f"\nŁĄCZNA DZIENNA EMISJA: {total} kg CO2")
-    
-    # Porada ekologiczna
+    zapisz_do_bazy(podsumowanie, total)
+
     print("----------------------------------------")
     if total > 1.5:
-        print("PORADA: Twoja emisja jest wysoka. Pamiętaj, aby")
-        print("wyłączać listwę zasilającą na noc!")
+        print("PORADA: Pamiętaj o wyłączaniu urządzeń!")
     else:
-        print("BRAWO! Twoje nawyki są bardzo ekologiczne.")
+        print("BRAWO! Twoje nawyki są ekologiczne.")
     print("========================================\n")
 
 if __name__ == "__main__":

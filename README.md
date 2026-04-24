@@ -7,6 +7,12 @@ Problem, który chcę rozwiązać, to brak wiedzy o tym, jak codzienne nawyki (n
 # Oto typ mojego projektu:
 > "Eco-kalkulator"
 
+## Lista kontrolna testów:
+1. **Funkcjonalność:** Sprawdzić, czy kalkulator poprawnie mnoży zużycie kWh przez wskaźnik CO2.
+2. **Interfejs:** Upewnić się, że komunikaty dla użytkownika są jasne i czytelne.
+3. **Obsługa błędów:** Sprawdzić, co się stanie, gdy użytkownik wpisze tekst zamiast liczby.
+4. **Wydajność:** Program powinien wyświetlać wynik natychmiast po wpisaniu danych.
+
 ## Jak Ueruchomic projekt?:
 1. Zainstaluj wymagane biblioteki: pip install flask flask-cors
 2. Uruchom plik główny: python main.py

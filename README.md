@@ -22,7 +22,7 @@ Problem, który chcę rozwiązać, to brak wiedzy o tym, jak codzienne nawyki (n
 ## Użyte technologie:
 1. Python (Logika kalkulatora i zapis danych)
 2. Flask (Serwer backendowy)
-3. HTML/CSS(Interfejs użytkownika)
+3. HTML/CSS/JavaScript(Interfejs użytkownika)
 
 ## Wyglad strony/projektu:
 <img width="1855" height="988" alt="{2F71D320-578B-46B1-9EA1-CF5A8F724AE1}" src="https://github.com/user-attachments/assets/04316578-51bf-4672-b132-8abc9da9178f" />

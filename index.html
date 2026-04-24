@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Eco-Kalkulator Pro</title>
     <style>
-        /* Zmienne kolorów dla trybów */
+        
         :root { 
             --bg: #f0f9f4; 
             --card: white; 
@@ -45,7 +45,7 @@
             color: white; 
         }
 
-        /* Chipsy - Szybki wybór */
+        
         .chip { 
             font-size: 10px; 
             background: #95d5b2; 
@@ -117,47 +117,52 @@
             <div class="grid">
                 
                 <div style="background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid var(--border);">
-                    <h3 style="color: #40916c; border-bottom: 2px solid #95d5b2; padding-bottom: 5px; margin-top: 0;">Godziny użycia:</h3>
-                    
-                    <div style="margin-bottom: 15px;">
-                        💻 Komputer: <input type="number" id="komp" value="0">
-                        <br>
-                        <button class="chip" onclick="document.getElementById('komp').value=1">1h</button>
-                        <button class="chip" onclick="document.getElementById('komp').value=4">4h</button>
-                        <button class="chip" onclick="document.getElementById('komp').value=8">Praca (8h)</button>
-                    </div>
+                    <h3 style="color: #2d6a4f; border-bottom: 2px solid #95d5b2; padding-bottom: 5px;">Godziny użycia:</h3>
 
-                    <div style="margin-bottom: 15px;">
-                        📺 Telewizor: <input type="number" id="tv" value="0">
-                        <br>
-                        <button class="chip" onclick="document.getElementById('tv').value=1">Wiadomości</button>
-                        <button class="chip" onclick="document.getElementById('tv').value=3">Film</button>
-                        <button class="chip" onclick="document.getElementById('tv').value=6">Serial</button>
-                    </div>
+<div style="margin: 15px 0;">
+    💻 Komputer: <input type="number" id="komp" value="0" style="float: right; width: 50px;">
+    <br>
+    <button class="chip" onclick="document.getElementById('komp').value=1">Krótko (1h)</button>
+    <button class="chip" onclick="document.getElementById('komp').value=4">Średnio (4h)</button>
+    <button class="chip" onclick="document.getElementById('komp').value=8">Praca (8h)</button>
+    <button class="chip" onclick="document.getElementById('komp').value=12">Gamer (12h)</button>
+</div>
 
-                    <div style="margin-bottom: 15px;">
-                        🎮 Konsola: <input type="number" id="kon" value="0">
-                        <br>
-                        <button class="chip" onclick="document.getElementById('kon').value=1">Szybko</button>
-                        <button class="chip" onclick="document.getElementById('kon').value=3">Sesja</button>
-                    </div>
+<div style="margin: 15px 0;">
+    📺 Telewizor: <input type="number" id="tv" value="0" style="float: right; width: 50px;">
+    <br>
+    <button class="chip" onclick="document.getElementById('tv').value=1">Wiadomości (1h)</button>
+    <button class="chip" onclick="document.getElementById('tv').value=3">Film (3h)</button>
+    <button class="chip" onclick="document.getElementById('tv').value=6">Serialoholik (6h)</button>
+</div>
 
-                    <div style="margin-bottom: 15px;">
-                        🔌 Ładowarka: <input type="number" id="lad" value="0">
-                        <br>
-                        <button class="chip" onclick="document.getElementById('lad').value=2">2h</button>
-                        <button class="chip" onclick="document.getElementById('lad').value=8">Noc</button>
-                    </div>
+<div style="margin: 15px 0;">
+    🎮 Konsola: <input type="number" id="kon" value="0" style="float: right; width: 50px;">
+    <br>
+    <button class="chip" onclick="document.getElementById('kon').value=1">Szybka partia (1h)</button>
+    <button class="chip" onclick="document.getElementById('kon').value=3">Sesja (3h)</button>
+    <button class="chip" onclick="document.getElementById('kon').value=6">Cały dzień (6h)</button>
+</div>
 
-                    <div style="margin-bottom: 15px;">
-                        💡 Oświetlenie: <input type="number" id="led" value="0">
-                        <br>
-                        <button class="chip" onclick="document.getElementById('led').value=4">4h</button>
-                        <button class="chip" onclick="document.getElementById('led').value=10">Cały dzień</button>
-                    </div>
-                    
-                    <button type="button" onclick="obliczIZapisz()" style="width: 100%; background: #40916c; color: white; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px;">
-                        OBLICZ I ZAPISZ
+<div style="margin: 15px 0;">
+    🔌 Ładowarka: <input type="number" id="lad" value="0" style="float: right; width: 50px;">
+    <br>
+    <button class="chip" onclick="document.getElementById('lad').value=0.5">Szybkie podładowanie (0.5h)</button>
+    <button class="chip" onclick="document.getElementById('lad').value=2">Do pełna (2h)</button>
+    <button class="chip" onclick="document.getElementById('lad').value=8">Cała noc (8h)</button>
+</div>
+
+<div style="margin: 15px 0;">
+    💡 Oświetlenie: <input type="number" id="led" value="0" style="float: right; width: 50px;">
+    <br>
+    <button class="chip" onclick="document.getElementById('led').value=2">Wieczór (2h)</button>
+    <button class="chip" onclick="document.getElementById('led').value=5">Długi wieczór (5h)</button>
+    <button class="chip" onclick="document.getElementById('led').value=10">Zima/Cały dzień (10h)</button>
+</div>
+
+<button type="button" onclick="obliczIZapisz()" style="width: 100%; background: #40916c; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px;">
+    OBLICZ I ZAPISZ
+</button>
                     </button>
                     <p id="status-serwera" style="font-size: 12px; text-align: center; margin-top: 10px; color: #40916c; font-weight: bold;"></p>
                 </div>
@@ -195,14 +200,14 @@
         window.onload = odswiezHistorie;
 
         function obliczIZapisz() {
-            // Pobieranie wartości
+            
             const h_komp = document.getElementById('komp').value || 0;
             const h_tv = document.getElementById('tv').value || 0;
             const h_kon = document.getElementById('kon').value || 0;
             const h_lad = document.getElementById('lad').value || 0;
             const h_led = document.getElementById('led').value || 0;
 
-            // Obliczenia (Moc * h * 0.7 kg CO2/kWh)
+            
             const e_komp = (h_komp * 0.1 * 0.7).toFixed(3);
             const e_tv = (h_tv * 0.15 * 0.7).toFixed(3);
             const e_kon = (h_kon * 0.2 * 0.7).toFixed(3);
@@ -211,7 +216,7 @@
 
             const suma = (parseFloat(e_komp) + parseFloat(e_tv) + parseFloat(e_kon) + parseFloat(e_lad) + parseFloat(e_led)).toFixed(2);
 
-            // Wyświetlanie listy
+            
             document.getElementById('lista-wynikow').innerHTML = `
                 <li>💻 Komputer: <b>${e_komp} kg CO2</b></li>
                 <li>📺 Telewizor: <b>${e_tv} kg CO2</b></li>
@@ -221,7 +226,7 @@
             `;
             document.getElementById('wynik-cyfra').innerText = suma + " kg";
 
-            // LOGIKA OCENY WYNIKU
+            
             let porada = "";
             let kolor = "";
             let textKolor = "#1b4332";
@@ -244,7 +249,7 @@
             box.style.background = kolor;
             document.getElementById('eko-porada').innerText = porada;
 
-            // WYSYŁANIE DO PYTHONA
+            
             fetch('http://127.0.0.1:5000/api/zapisz', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

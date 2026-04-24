@@ -25,5 +25,5 @@ Problem, który chcę rozwiązać, to brak wiedzy o tym, jak codzienne nawyki (n
 3. HTML/CSS/JavaScript(Interfejs użytkownika)
 
 ## Wyglad strony/projektu:
-<img width="1855" height="988" alt="{2F71D320-578B-46B1-9EA1-CF5A8F724AE1}" src="<img width="1895" height="933" alt="{069DBA78-6D5B-4D1E-9BB7-7C7C868EE472}" src="https://github.com/user-attachments/assets/fe7b76df-e30c-41c7-ba40-5fd441302ad7" />
+src="<img width="1895" height="933" alt="{069DBA78-6D5B-4D1E-9BB7-7C7C868EE472}" src="https://github.com/user-attachments/assets/fe7b76df-e30c-41c7-ba40-5fd441302ad7" />
 " />
